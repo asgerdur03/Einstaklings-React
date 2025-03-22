@@ -1,10 +1,10 @@
 import Link from "next/link";
+import Register from "@/components/Register/Register";
 
 export default function register() {
     return (
         <div>
-            <h1>Register</h1>
-            <Link href="/">Register and redirect to login</Link>
+            <Register/>
         </div>
     );
 }
