@@ -1,3 +1,4 @@
+'use client';
 import Navigation from "@/components/Navigation/Navigation";
 import Posts from "@/components/Posts/Posts";
 export default function Home() {
