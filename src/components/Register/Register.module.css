@@ -1,0 +1,79 @@
+.register {
+    height: 100vh;
+    background-color: rgb(193,190,255);
+    display: flex ;
+    align-items: center;
+    justify-content: center
+}
+
+
+.left{
+    flex: 1;
+    background: linear-gradient(rgba(39, 11, 96, 0.5), rgba(39, 11, 96, 0.5)),
+    url("https://www.petmd.com/sites/default/files/petmd-cat-happy-13.jpg")
+    center;
+    background-size: cover;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    color: rgb(181, 11, 11);
+}
+
+.right {
+    flex: 1;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    justify-content: center;
+}
+
+.card{
+    width: 50%;
+    display: flex;
+    justify-self: center;
+    align-self: center;
+    background-color: rgb(230, 176, 176);
+    border-radius: 10px;
+    min-height: 600px;
+    overflow: hidden;
+}
+
+.card .left h1{
+    font-size: 100px;
+    line-height: 100px;
+}
+
+.card .left span{
+    font-size: 14px;
+}
+
+.card  button{
+    width: 60%;
+    padding: 10px;
+    border: none;
+    background-color: rgb(181, 11, 11);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.card .right h1{
+    color: #555;
+}
+
+.card .right form{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.card .right form input{
+    border: none;
+    border-bottom: 1px solid gray;
+    padding: 20px 10px;
+}
+
+
+

@@ -1,0 +1,31 @@
+.navigation{
+    background-color: red;
+    position: fixed;
+    width: 100vw;
+}
+
+
+.navigation nav{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    
+}
+
+
+.navigation .nav_item{
+    background-color: green;
+    
+}
+
+
+.nav_item .profile a{
+    display: flex;
+    flex-direction: column;
+}
+
+.profile img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}

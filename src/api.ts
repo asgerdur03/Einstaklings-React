@@ -1,3 +1,4 @@
+import { profile } from "console";
 import {User, Post} from "./types";
 
 
@@ -63,6 +64,8 @@ export class ApiClient {
 
         if (res?.token) {
             localStorage.setItem("token", res.token);
+            localStorage.setItem("user", JSON.stringify(res));
+
             return true;
         }
         return false;
@@ -92,5 +95,8 @@ export class ApiClient {
 
         return res
     }
+
+    
+
 
 }

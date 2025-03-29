@@ -1,8 +1,9 @@
-
+'use client';
 import styles from "./Posts.module.css";
 import { use, useEffect, useState } from "react";
 import {ApiClient} from "@/api";
 import {Post} from "@/types";
+import PostInfo from "../PostInfo/PostInfo";
 
 
 const mockPosts= [
@@ -33,9 +34,10 @@ export default function Posts() {
     useEffect(() => {
         async function fetchPosts() {
             const api = new ApiClient();
-            const posts = await api.fetchFromApi<{posts: Post[]}>('http://localhost:5000/posts');
-            setPosts(posts?.posts ?? []);
+            const posts = await api.getAllPosts();
+            setPosts(posts ?? []);
         }
+
         fetchPosts();
     }, []);
 
@@ -43,18 +45,39 @@ export default function Posts() {
 
 
     return (
-        <div>
+        <div className={styles.posts}>
             <h2>Posts</h2>
+
             {posts.map((post) => (
-                <div key={post.id} className={styles.post}>
-                    <img   src={post.imageUrl} alt={post.caption} />
-                    <p>{post.caption}</p>
-                    <p>lat : {post.lat}</p>
-                    <p>long : {post.lng}</p>
-                    <p>{(post.createdAt).toString()}</p>
+                <div className={styles.post} key={post.id}>
+
+                    <div className = {styles.postUser}>
+                        <PostInfo userId={post.userId}/>
+                    </div>
+
+                    <div className={styles.postContent}>
+                        <div>
+                            <img src={post.imageUrl} alt={post.caption} />
+                            <p>{post.caption}</p>
+                        </div>
+                        <div>
+                            <div className={styles.tags}>
+                                <p>{post.color}</p>
+                                <p>{post.mood}</p>
+                                <p>{post.size}</p>
+                                < p>{post.age}</p>
+                            </div>
+                            <p>{post.lat}</p><p>{post.lng}</p>
+                            <p>{post.createdAt.toString()}</p>
+                        </div>
+                        
+                    </div>
+
+                    <button>Like</button>
+                    <input type="text" placeholder="Comment"/>
+
                 </div>
             ))}
-            
             
         </div>
     );
