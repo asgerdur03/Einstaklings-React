@@ -2,7 +2,7 @@
 
 import Post from "../Post/Post";
 import {CreateUser, Post as PostType} from "@/types";
-import React, {useEffect, useState} from "react";
+import React, {use, useEffect, useState} from "react";
 import {ApiClient} from "@/api";
 import moment from "moment";
 import styles from "./User.module.css";
@@ -11,8 +11,13 @@ import Image from "next/image";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "https://einstaklings-api.onrender.com";
 export default function User() {
-    const user = localStorage.getItem("user");
     const [posts, setPosts] = useState<Array<PostType>| null>([]);
+
+    let user
+    if (typeof window !== "undefined"){
+      user = localStorage.getItem("user");
+    }
+    
 
     let parsedUser;
     if (user) {

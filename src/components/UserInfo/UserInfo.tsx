@@ -9,15 +9,20 @@ export default function UserInfo(userId: { userId: string }) {
     // blablabla get user by userId, post the info, rpofile pic, username
     const [user, setUser] = useState<User | null>(null);
 
+    
 
     useEffect(() => {
         async function fetchUser() {
             const api = new ApiClient();
+            if (!userId.userId) {
+                return;
+            }
             const getUser = await api.getUserById(userId.userId);
             setUser(getUser);
         }
         fetchUser();
     }, [userId.userId]);
+
 
 
 

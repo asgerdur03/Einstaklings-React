@@ -4,15 +4,29 @@ import styles from "./Navigation.module.css";
 import UserInfo from "../UserInfo/UserInfo";
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { useEffect, useState } from "react";
+import { ApiClient } from "@/api";
+import { User } from "@/types";
 
 export default function Navigation() {
-    const user = localStorage.getItem("user") 
 
-    let parsedUser;
-    if (user) {
-        parsedUser = JSON.parse(user);
-    }
+    const [parsedUser, setParsedUser] = useState<User| null>(null);
+    useEffect(() => {
+        async function fetchUser() {
+            const api = new ApiClient();
+            if (!parsedUser) {
+                const getUser = await api.getMe();
 
+                if (!getUser) {
+                    return;
+                }
+            setParsedUser(getUser);
+            }
+        }
+        fetchUser();
+        
+    });
+    
     return (
         <div className={styles.navigation}>
             <nav>
@@ -24,7 +38,7 @@ export default function Navigation() {
                 <div className={styles.nav_item}>
                     <div className={styles.profile}>
                         <Link href="/home/me">
-                        <UserInfo userId={parsedUser.user.id} />
+                        <UserInfo userId={parsedUser?.id ?? ""} />
                         </Link>
                     </div>
                 </div>
@@ -33,10 +47,6 @@ export default function Navigation() {
                         <LogoutIcon />
                     </Link>
                 </div>
-
-                
-
-                
             </nav>
         </div>
     )

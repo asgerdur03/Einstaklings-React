@@ -20,7 +20,8 @@ export class ApiClient {
                     "Content-Type": "application/json",
                     ...(token? { Authorization: `Bearer ${token}` }: {})
                 },
-                body: options?.body ? JSON.stringify(options.body) : undefined
+                body: options?.body ? JSON.stringify(options.body) : undefined,
+                
             });
         } catch (error) {
             console.error("Error fetching from api", url, error);
@@ -62,6 +63,7 @@ export class ApiClient {
         if (res?.token) {
             localStorage.setItem("token", res.token);
             localStorage.setItem("user", JSON.stringify(res));
+            document.cookie = `token=${res.token}; path=/; max-age=${3600*3};`;
 
             return true;
         }

@@ -28,7 +28,7 @@ export default function Post({post}: {post: PostType}) {
             setLikes(likes ?? []);
         }
         fetchLikes();
-    }, [post]);
+    }, [postId]);
 
     const toggleLike = async() => {
         console.log("Toggle like");
