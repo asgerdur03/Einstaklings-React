@@ -4,6 +4,8 @@ import "./globals.css";
 
 
 const comicNeue = Comic_Neue({
+  subsets: ["latin"],
+  preload: true,
   weight: ["400", "700"],
   variable: "--font-comic-neue",
 });
