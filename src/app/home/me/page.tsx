@@ -1,3 +1,4 @@
+'use client';
 import Navigation from "@/components/Navigation/Navigation";
 import User from "@/components/User/User";
 import styles from "./../Home.module.css";
