@@ -1,28 +1,26 @@
 'use client';
 
 import Post from "../Post/Post";
-import {Post as PostType} from "@/types";
-import {useEffect, useState} from "react";
+import {CreateUser, Post as PostType} from "@/types";
+import React, {useEffect, useState} from "react";
 import {ApiClient} from "@/api";
 import moment from "moment";
-import Link from "next/link";
+import styles from "./User.module.css";
 
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "https://einstaklings-api.onrender.com";
 export default function User() {
     const user = localStorage.getItem("user");
-
     const [posts, setPosts] = useState<Array<PostType>| null>([]);
 
     let parsedUser;
     if (user) {
         parsedUser = JSON.parse(user);
-        console.log("Parsed user:", parsedUser);
     }
-
     const userInfo = parsedUser.user;
-
+    
     useEffect(() => {
-        async function fetchPosts() {
+            async function fetchPosts() {
             const api = new ApiClient();
             const posts = await api.getPostsByUserId(userInfo.id);
             setPosts(posts ?? []);
@@ -30,26 +28,62 @@ export default function User() {
         fetchPosts();
     }, []);
 
+    const [form, setForm] = useState<CreateUser>({
+        username: userInfo.username,
+        email: userInfo.email,
+        password: userInfo.password,
+        profilePic: userInfo.profilePic
+    })
 
-    console.log(posts);
+    const handleChangeUser = async (e: React.FormEvent) => {
+      e.preventDefault();
+        const api = new ApiClient();
+        const newUser = await api.editUser(form);
+        console.log("new user: ", newUser);
+        window.location.reload();
+    };
+
+    const handleImageUpload = async(e: React.ChangeEvent<HTMLInputElement>) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      const formData = new FormData();
+      formData.append('image', file);
+      const response = await fetch(`${BASE_URL}/upload`, { method: 'POST', body: formData });
+      const data = await response.json();
+      const imageUrl = data.image?.[0]?.url
+      console.log("image url: ", imageUrl);
+      setForm((prev) => ({ ...prev, profilePic: imageUrl ?? "" }));
+  }
+
 
     return (
         <div>
-            <div >
-                    <Link href="/" onClick={() => localStorage.removeItem("token")}>Logout</Link>
-                </div>
-            <p>TODO: make update user info, list their posts, and the edit and delete actions</p>
+          <div className={styles.upload_image}>
+            <form onSubmit={handleChangeUser}>
+              <p>Upload profile pic</p>
+              <input type="file" name="image" accept="image/*" onChange={handleImageUpload} />
+              {form.profilePic && (
+                    <div className={styles.preview}>
+                        <img src={form.profilePic} alt="preview" /> 
+                    </div>
+                )}
+              <button type="submit">Submit</button>
+            </form>
+          </div>
+
+
+          <div className={styles.profile}>
             <h1>User</h1>
             <p>Username: {userInfo.username}</p>
             <p>Email: {userInfo.email}</p>
-            <p>Admin: {userInfo.admin ? "true" : "false"}</p>
-            <p>Created At: {moment(userInfo.createdAt).fromNow()}</p>
+            <p>User since: {moment(userInfo.createdAt).fromNow()}</p>
+            <p>Number of posts: {posts?.length}</p>
+          </div>
 
-            <div className="posts">
-                {posts?.map((post) => <Post post={post}/>)}
-        
-            </div>
 
+          <div className={styles.posts}>
+              {posts?.map((post) => <Post post={post}/>)}
+          </div>
         </div>
     );
 }

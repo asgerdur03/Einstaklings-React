@@ -9,8 +9,8 @@ export default function Home() {
             </div>
 
             <div className={styles.container}>
-                <h1>Me</h1>
                 <User/>
+
             </div>
         </div>
     );

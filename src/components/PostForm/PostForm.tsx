@@ -4,6 +4,8 @@ import { ApiClient } from "@/api";
 import { Post } from "@/types";
 import styles from "./PostForm.module.css";
 
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "https://einstaklings-api.onrender.com";
+
 const enumOptions = {
     color: ["BLACK", "ORANGE", "GRAY", "WHITE", "MIXED","BROWN", "TABBY", "CALICO", "TORTOISESHELL"],
     mood: [ "FRIENDLY", "SCARED", "CURIOUS", "PLAYFUL","ANGRY", "SLEEPY", "ALERT"],
@@ -34,7 +36,7 @@ export default function PostForm() {
         formData.append('image', file);
 
         // todo: fix, call the api, not fetch directly
-        const response = await fetch('http://localhost:5000/upload', { method: 'POST', body: formData });
+        const response = await fetch(`${BASE_URL}/upload`, { method: 'POST', body: formData });
         
         const data = await response.json();
         const imageUrl = data.image?.[0]?.url

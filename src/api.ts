@@ -1,8 +1,8 @@
 import { profile } from "console";
-import {User, Post, Like, Comment, CreatePost} from "./types";
+import {User, Post, Like, Comment, CreatePost, CreateUser} from "./types";
 
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:5000";
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "https://einstaklings-api.onrender.com";
 export class ApiClient {
     async fetchFromApi<T>(
         url: string,
@@ -77,7 +77,8 @@ export class ApiClient {
             body: {
                 username: username,
                 email: email,
-                password: password
+                password: password,
+                profilePic: null
             }
         });
 
@@ -255,14 +256,15 @@ export class ApiClient {
         return data
     }
 
-    async editUser(userId: string, user: User) {
-        const url = `${BASE_URL}/users/${userId}`;
+    async editUser(user: CreateUser) {
+        const url = `${BASE_URL}/users/me`;
         const data = await this.fetchFromApi(url, {
             method: "PATCH",
             body: {
                 username: user.username,
                 email: user.email,
-                password: user.password
+                password: user.password,
+                profilePic: user.profilePic
             }
         });
         return data

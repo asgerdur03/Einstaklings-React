@@ -7,6 +7,7 @@ import { User } from "@/types";
 import styles from "./Navigation.module.css";
 import UserInfo from "../UserInfo/UserInfo";
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 export default function Navigation() {
     const user = localStorage.getItem("user") 
@@ -22,10 +23,8 @@ export default function Navigation() {
                 <div className={styles.nav_item}>
                     <Link href="/home">
                         <HomeOutlinedIcon fontSize="large"/>
-                    
                     </Link>
                 </div>
-
                 <div className={styles.nav_item}>
                     <div className={styles.profile}>
                         <Link href="/home/me">
@@ -33,6 +32,13 @@ export default function Navigation() {
                         </Link>
                     </div>
                 </div>
+                <div className={styles.nav_item}>
+                    <Link href="/" onClick={() => localStorage.removeItem("token")}>
+                        <LogoutIcon />
+                    </Link>
+                </div>
+
+                
 
                 
             </nav>

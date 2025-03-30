@@ -25,7 +25,7 @@ export default function Posts() {
 
     return (
         <div className={styles.posts}>
-            {posts.map((post) => <Post post={post}/>)}
+            {posts.map((post, index) => <Post post={post} key={post.id}/>)}
         </div>
     );
 }
