@@ -1,8 +1,8 @@
 'use client';
 import { useState } from "react";
 import { ApiClient } from "@/api";
-import { Post } from "@/types";
 import styles from "./PostForm.module.css";
+import Image from "next/image";
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "https://einstaklings-api.onrender.com";
 
@@ -66,7 +66,7 @@ export default function PostForm() {
 
                 {form.imageUrl && (
                     <div className={styles.preview}>
-                        <img src={form.imageUrl} alt="preview" />
+                        <Image src={form.imageUrl} alt="preview" width={200} height={200} />
                         <button onClick={handleRemoveImage}
                         style={{
                             position: "absolute",

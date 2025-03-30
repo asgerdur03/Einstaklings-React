@@ -6,6 +6,7 @@ import React, {useEffect, useState} from "react";
 import {ApiClient} from "@/api";
 import moment from "moment";
 import styles from "./User.module.css";
+import Image from "next/image";
 
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "https://einstaklings-api.onrender.com";
@@ -26,7 +27,7 @@ export default function User() {
             setPosts(posts ?? []);
         }
         fetchPosts();
-    }, []);
+    }, [userInfo.id]);
 
     const [form, setForm] = useState<CreateUser>({
         username: userInfo.username,
@@ -64,7 +65,7 @@ export default function User() {
               <input type="file" name="image" accept="image/*" onChange={handleImageUpload} />
               {form.profilePic && (
                     <div className={styles.preview}>
-                        <img src={form.profilePic} alt="preview" /> 
+                        <Image src={form.profilePic} alt="preview" width={100} height={100} key={form.username} />
                     </div>
                 )}
               <button type="submit">Submit</button>
@@ -82,7 +83,7 @@ export default function User() {
 
 
           <div className={styles.posts}>
-              {posts?.map((post) => <Post post={post}/>)}
+              {posts?.map((post, index) => <Post post={post} key={index}/>)}
           </div>
         </div>
     );

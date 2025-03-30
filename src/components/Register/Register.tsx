@@ -5,7 +5,7 @@ import { ApiClient } from "@/api";
 import { useRouter } from "next/navigation";
 import styles from "./Register.module.css";
 
-export default function register() {
+export default function Register() {
     const [inputs, setInputs] = useState({ username: "", email: "", password: "" });
     const router = useRouter();
 
@@ -13,7 +13,8 @@ export default function register() {
         setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     }
 
-    const handleRegister = async () => {
+    const handleRegister = async (e: React.FormEvent) => {
+        e.preventDefault();
         const api = new ApiClient();
         const registered = await api.apiRegister(inputs.username, inputs.email, inputs.password);
         console.log(registered);

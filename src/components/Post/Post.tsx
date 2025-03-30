@@ -2,7 +2,7 @@
 import {Post as PostType} from "@/types";
 import styles from "./Post.module.css";
 import moment from "moment";
-import { use, useState } from "react";
+import { useState } from "react";
 import { useEffect } from "react";
 import { ApiClient } from "@/api";
 import {Like} from "@/types";
@@ -10,15 +10,14 @@ import Comment from "../Comment/Comment";
 import UserInfo from "../UserInfo/UserInfo";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
-import { Island_Moments } from "next/font/google";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { buffer } from "stream/consumers";
+import Image from "next/image";
 
 export default function Post({post}: {post: PostType}) {
     const postId = post.id;
 
     const [likes, setLikes] = useState<Array<Like>|null>(null);
-    const [showLikers, setShowLikers] = useState();
+    const [showLikers, setShowLikers] = useState(false);
 
     const [liked, setLiked] = useState(false);
 
@@ -29,7 +28,7 @@ export default function Post({post}: {post: PostType}) {
             setLikes(likes ?? []);
         }
         fetchLikes();
-    }, []);
+    }, [post]);
 
     const toggleLike = async() => {
         console.log("Toggle like");
@@ -65,8 +64,6 @@ export default function Post({post}: {post: PostType}) {
 
     const handleEdit = () => {
         console.log("Edit post", post.id);
-
-        // Navigate or open edit UI
     };
     
     const handleDelete = async() => {
@@ -106,8 +103,13 @@ export default function Post({post}: {post: PostType}) {
             <div className={styles.postContent}>
                 <p>{post.caption}</p>
                 <div className={styles.postImage}>
+                    <Image
+                        src={post.imageUrl}
+                        alt={post.caption}
+                        width={400}
+                        height={400}
+                    />
                     
-                    <img src={post.imageUrl} alt={post.caption} />
                 </div>
                 
                     <div className={styles.tags}>

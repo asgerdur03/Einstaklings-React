@@ -1,9 +1,5 @@
 'use client';
 import Link from "next/link";
-import { use, useState } from "react";
-import { useEffect } from "react";
-import { ApiClient } from "@/api";
-import { User } from "@/types";
 import styles from "./Navigation.module.css";
 import UserInfo from "../UserInfo/UserInfo";
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';

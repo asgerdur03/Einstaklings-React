@@ -6,7 +6,6 @@ import { useState } from "react";
 import moment from "moment";
 import UserInfo from "../UserInfo/UserInfo";
 import styles from "./Comment.module.css";
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 export default function Comment({postId}: {postId: string}) {
@@ -21,25 +20,15 @@ export default function Comment({postId}: {postId: string}) {
             setComments(comments ?? []);
         }
         fetchComments();
-    }, []);
+    }, [postId]);
 
     const handleComment = async() => {
         const api = new ApiClient();
-        const comment = await api.postComment(postId, text);
+        await api.postComment(postId, text);
         const updateComments = await api.getCommentsByPostId(postId);
         setComments(updateComments ?? []);
     }
 
-    const [showMenu, setShowMenu] = useState(false);
-
-    console.log(comments);
-
-    
-    const handleEdit = () => {
-        console.log("Edit comment");
-
-    };
-    
     const handleDelete = async(commentId: string, userId: string) => {
         const loggedInUser = localStorage.getItem("user");
 

@@ -1,11 +1,9 @@
 'use client';
 import styles from "./Posts.module.css";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {ApiClient} from "@/api";
 import {Post as PostType} from "@/types";
-import PostInfo from "../UserInfo/UserInfo";
-import Link from "next/link";
-import moment from "moment";
+
 import Post from "../Post/Post";
 
 
@@ -20,12 +18,12 @@ export default function Posts() {
         }
 
         fetchPosts();
-    }, []);
+    },);
 
 
     return (
         <div className={styles.posts}>
-            {posts.map((post, index) => <Post post={post} key={post.id}/>)}
+            {posts.map((post, index) => <Post post={post} key={index}/>)}
         </div>
     );
 }

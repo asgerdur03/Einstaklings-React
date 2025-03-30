@@ -1,4 +1,3 @@
-import { profile } from "console";
 import {User, Post, Like, Comment, CreatePost, CreateUser} from "./types";
 
 

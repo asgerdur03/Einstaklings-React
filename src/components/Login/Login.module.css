@@ -9,15 +9,15 @@
 
 .left{
     flex: 1;
-    background: linear-gradient(rgba(39, 11, 96, 0.5), rgba(39, 11, 96, 0.5)),
-    url("https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Cat-eating-prey.jpg/220px-Cat-eating-prey.jpg")
+    background: linear-gradient(rgba(30, 27, 222, 0.5), rgba(21, 111, 189, 0.5)),
+    url("https://upload.wikimedia.org/wikipedia/commons/4/4d/Cat_November_2010-1a.jpg")
     center;
     background-size: cover;
     padding: 50px;
     display: flex;
     flex-direction: column;
     gap: 30px;
-    color: rgb(181, 11, 11);
+    color: rgb(255, 255, 255);
 }
 
 .right {
@@ -34,7 +34,7 @@
     display: flex;
     justify-self: center;
     align-self: center;
-    background-color: rgb(230, 176, 176);
+    background-color: rgb(94, 212, 255);
     border-radius: 10px;
     min-height: 600px;
     overflow: hidden;
@@ -53,14 +53,14 @@
     width: 60%;
     padding: 10px;
     border: none;
-    background-color: rgb(181, 11, 11);
-    color: white;
+    background-color: rgb(28, 26, 172);
+    color: rgb(255, 255, 255);
     font-weight: bold;
     cursor: pointer;
 }
 
 .card .right h1{
-    color: #555;
+    color: #494949;
 }
 
 .card .right form{
