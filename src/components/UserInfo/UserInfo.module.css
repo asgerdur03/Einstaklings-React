@@ -1,0 +1,20 @@
+.userInfo {
+
+    display: flex ;
+    flex-direction: row;
+    
+}
+
+.profilePic {
+    width: 30px;
+    height: 30px;
+    border-radius: 50px;
+}
+
+.username {
+    font-weight: bold;
+    padding: 0.5rem;
+    text-align: center;
+    justify-self: center
+    
+}

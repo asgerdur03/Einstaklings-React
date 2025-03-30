@@ -1,0 +1,37 @@
+.make_comment {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.make_comment input{
+    height: 50px;
+    width: 80%;
+    border-radius: 10px;
+}
+
+.make_comment button{
+    height: 50px;
+    width: 20%;
+    border-radius: 10px;
+}
+
+.comment{
+    border-bottom: 1px lightblue solid;
+}
+
+.comment_content{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.comment_actions{
+    display: flex;
+    flex-direction: column;
+    justify-items: flex-end;
+    align-items: flex-end;
+}
+
+

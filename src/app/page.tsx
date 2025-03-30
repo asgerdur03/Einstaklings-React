@@ -6,14 +6,8 @@ import Login from "@/components/Login/Login";
 
 export default function login() {
   return (
-    <div className={styles.page}>
+    <div>
       <Login/>
-      
-      <div>
-        <Link href="/register">Register</Link>
-      </div>
-
-    
     </div>
   );
 }

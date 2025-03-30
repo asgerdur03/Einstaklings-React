@@ -1,0 +1,47 @@
+.post_form {
+    margin: 40px auto;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    background: white;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .post_form input[type="text"],
+  .post_form select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 1rem;
+  }
+  
+  .post_form input[type="file"] {
+    font-size: 0.9rem;
+  }
+  
+  .post_form button {
+    padding: 10px;
+    background-color: #0866ff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .post_form button:hover {
+    background-color: #0556d4;
+  }
+  
+  .preview {
+    text-align: center;
+  }
+  
+  .preview img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin-top: 10px;
+  }
+  

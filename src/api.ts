@@ -1,5 +1,5 @@
 import { profile } from "console";
-import {User, Post} from "./types";
+import {User, Post, Like, Comment, CreatePost} from "./types";
 
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:5000";
@@ -12,7 +12,6 @@ export class ApiClient {
         }
     ): Promise<T | null> {
         const token = localStorage.getItem("token");
-        console.log(token);
         let response: Response | undefined;
 
         try {
@@ -44,7 +43,6 @@ export class ApiClient {
             console.error("Error parsing json from api", url, error);
             return null;
         }
-
 
         return json as T;
         
@@ -96,7 +94,180 @@ export class ApiClient {
         return res
     }
 
-    
+    async getLikesByPostId(postId: string): Promise<Array<Like> | null> {
+        const url = `${BASE_URL}/likes/${postId}`;
+
+        const data = await this.fetchFromApi<Array<Like> | null>(url, {
+            method: "GET"
+        });
+
+        return data
+    }
+
+    async toggleLike(postId: string) {
+        const url = `${BASE_URL}/likes`;
+
+        const data = await this.fetchFromApi<{liked: boolean}>(url, {
+            method: "POST",
+            body: {
+                postId: postId
+            }
+        });
+        return data
+
+    }
+
+    async getCommentsByPostId(postId: string): Promise<Array<Comment> | null> {
+        const url = `${BASE_URL}/comments/${postId}`;
+
+        const data = await this.fetchFromApi<Array<Comment> | null>(url, {
+            method: "GET"
+        });
+
+        return data
+    }
+
+    async postComment(postId: string, comment: string) {
+        const url = `${BASE_URL}/comments`;
+
+        const data = await this.fetchFromApi<Array<Comment> | null>(url, {
+            method: "POST",
+            body: {
+                postId: postId,
+                comment: comment
+            }
+        });
+
+        return data
+    }
+
+    async getUserById(userId: string): Promise<User | null> {
+        const url = `${BASE_URL}/users/find/${userId}`;
+
+        const data = await this.fetchFromApi<User | null>(url, {
+            method: "GET"
+        });
+
+        return data
+    }
+
+    async uploadImage(file: File): Promise<string | null> {
+        const url = `${BASE_URL}/upload`;
+        // fix, then use 
+
+        const data = await this.fetchFromApi<string | null>(url, {
+            method: "POST",
+            body: {
+                image: file
+            }
+        });
+
+        return data
+    }
+
+    async createPost(post: CreatePost): Promise<Post | null> {
+        const url = `${BASE_URL}/posts`;
+
+        const data = await this.fetchFromApi<Post | null>(url, {
+            method: "POST",
+            body: {
+                imageUrl: post.imageUrl,
+                caption: post.caption,
+                color: post.color,
+                mood: post.mood,
+                size: post.size,
+                age: post.age
+            }
+        });
+
+        return data
+    }
+
+
+    async getPostsByUserId(userId: string): Promise<Array<Post> | null> {
+        const url = `${BASE_URL}/posts/users/${userId}`;
+
+        const data = await this.fetchFromApi<Array<Post> | null>(url, {
+            method: "GET"
+        });
+
+        return data
+    }
+
+    async getMe(): Promise<User | null> {
+        const url = `${BASE_URL}/users/me`;
+
+        const data = await this.fetchFromApi<User | null>(url, {
+            method: "GET"
+        });
+
+        return data
+    }
+
+    // TODO- use
+    async deletePost(postId: string) {
+        const url = `${BASE_URL}/posts/${postId}`;
+        const data = await this.fetchFromApi(url, {
+            method: "DELETE"
+        });
+        return data
+    }
+    async deleteAccount() {
+        const url = `${BASE_URL}/users/me`;
+        const data = await this.fetchFromApi(url, {
+            method: "DELETE"
+        });
+        return data
+    }
+
+    async deleteComment(commentId: string) {
+        const url = `${BASE_URL}/comments/${commentId}`;
+        const data = await this.fetchFromApi(url, {
+            method: "DELETE"
+        });
+        return data
+    }
+
+    async editPost(postId: string, post: CreatePost) {
+        const url = `${BASE_URL}/posts/${postId}`;
+        const data = await this.fetchFromApi(url, {
+            method: "PATCH",
+            body: {
+                imageUrl: post.imageUrl,
+                caption: post.caption,
+                color: post.color,
+                mood: post.mood,
+                size: post.size,
+                age: post.age
+            }
+        });
+        return data
+    }
+
+    async editComment(commentId: string, comment: string) {
+        const url = `${BASE_URL}/comments/${commentId}`;
+        const data = await this.fetchFromApi(url, {
+            method: "PATCH",
+            body: {
+                comment: comment
+            }
+        });
+        return data
+    }
+
+    async editUser(userId: string, user: User) {
+        const url = `${BASE_URL}/users/${userId}`;
+        const data = await this.fetchFromApi(url, {
+            method: "PATCH",
+            body: {
+                username: user.username,
+                email: user.email,
+                password: user.password
+            }
+        });
+        return data
+    }
+
 
 
 }

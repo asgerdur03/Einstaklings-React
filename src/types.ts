@@ -22,5 +22,30 @@ export type Post = {
     size: string;
     age: string;
     createdAt: Date;
-    // add the cat attributes
 }
+
+export type CreatePost = {
+    imageUrl: string;
+    caption: string;
+    color: string;
+    mood: string;
+    size: string;
+    age: string;
+}
+
+
+export type Like = {
+    id: string;
+    postId: string;
+    userId: string;
+    createdAt: Date;
+}
+
+export type Comment = {
+    id: string;
+    text: string;
+    postId: string;
+    userId: string;
+    createdAt: Date;
+}
+
