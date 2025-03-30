@@ -2,7 +2,7 @@
 
 import Post from "../Post/Post";
 import {CreateUser, Post as PostType} from "@/types";
-import React, {use, useEffect, useState} from "react";
+import React, { useEffect, useState} from "react";
 import {ApiClient} from "@/api";
 import moment from "moment";
 import styles from "./User.module.css";
