@@ -4,37 +4,57 @@ import {ApiClient} from "@/api";
 import React, {useState} from "react";
 import {useRouter} from "next/navigation";
 import styles from "./Login.module.css";
+import { useAuth } from "@/context/AuthContext";
 
 
 export default function Login() {
     const [inputs, setInputs] = useState({ username: "", email: "", password: "" });
     const router = useRouter();
+    const {login} = useAuth();
 
+    const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
+
+    
     const handleChange = (e: any) => {
         setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     }
 
-
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
-        const api = new ApiClient();
-        console.log(inputs.username, inputs.email, inputs.password);
-        const loggedIn = await api.apiLogin(inputs.username, inputs.email, inputs.password);
-        console.log(loggedIn);
+        setLoading(true);
+        setError('');
 
-        if (loggedIn) {
-            console.log("Login successful");
-            
-            router.push("/home");
-        } else {
-            alert("Login failed");
+        try {
+            const api = new ApiClient();
+            const result = await api.apiLogin(inputs.username, inputs.email, inputs.password);
+            if (result) {
+                if (result.token) {
+                    console.log("Result after login", result);
+                    localStorage.setItem('token', result.token);
+                    login(result.user, result.token);
+                } else {
+                    setError("Login failed, no token returned");
+                }
+            }else {
+                setError("Login failed, no result returned");
+            }
+        } catch (error) {
+            setError("Error logging in: " + error);
+        }finally {
+            setLoading(false);
         }
     }
 
+
+
     return (
         <div className={styles.page}>
+            
         <div className={styles.card}>
             <div className={styles.left}>
+                {loading && <p>Logging in...</p>}
+                {error && <p style= {{color: "red"}}>{error}</p>}
                 <span>No account? No problem</span>
                 <Link href="/register"><button>Register</button></Link>
             </div>

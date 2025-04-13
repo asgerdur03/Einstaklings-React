@@ -7,25 +7,14 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { useEffect, useState } from "react";
 import { ApiClient } from "@/api";
 import { User } from "@/types";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Navigation() {
+    const {user, logout, loading} = useAuth();
 
-    const [parsedUser, setParsedUser] = useState<User| null>(null);
-    useEffect(() => {
-        async function fetchUser() {
-            const api = new ApiClient();
-            if (!parsedUser) {
-                const getUser = await api.getMe();
-
-                if (!getUser) {
-                    return;
-                }
-            setParsedUser(getUser);
-            }
-        }
-        fetchUser();
-        
-    });
+    if (loading) {
+        return( <p>Loading...</p>)
+    }
     
     return (
         <div className={styles.navigation}>
@@ -38,14 +27,16 @@ export default function Navigation() {
                 <div className={styles.nav_item}>
                     <div className={styles.profile}>
                         <Link href="/home/me">
-                        <UserInfo userId={parsedUser?.id ?? ""} />
+
+                        {user && 
+
+                        <UserInfo userId={user.id} /> }
+
                         </Link>
                     </div>
                 </div>
                 <div className={styles.nav_item}>
-                    <Link href="/" onClick={() => localStorage.removeItem("token")}>
-                        <LogoutIcon />
-                    </Link>
+                    <LogoutIcon onClick={logout} />
                 </div>
             </nav>
         </div>

@@ -5,6 +5,8 @@ import { ApiClient } from "@/api";
 import { useRouter } from "next/navigation";
 import styles from "./Register.module.css";
 
+// TODO: add automatic login
+
 export default function Register() {
     const [inputs, setInputs] = useState({ username: "", email: "", password: "" });
     const router = useRouter();

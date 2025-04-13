@@ -12,26 +12,33 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Image from "next/image";
+import { useAuth } from "@/context/AuthContext";
 
-export default function Post({post}: {post: PostType}) {
+export default function Post({post, onChange}: {post: PostType, onChange: () => void}) {
     const postId = post.id;
 
     const [likes, setLikes] = useState<Array<Like>|null>(null);
     const [showLikers, setShowLikers] = useState(false);
 
     const [liked, setLiked] = useState(false);
+    const {user} = useAuth();
 
     useEffect(() => {
         async function fetchLikes() {
             const api = new ApiClient();
             const likes = await api.getLikesByPostId(postId);
             setLikes(likes ?? []);
+
+            if (likes && user) {
+                const hasLiked = likes.some((like) => like.userId === user.id);
+                setLiked(hasLiked);
+            }
         }
+
         fetchLikes();
-    }, [postId]);
+    }, [postId, user]);
 
     const toggleLike = async() => {
-        console.log("Toggle like");
         const api = new ApiClient();
         const isLiked = await api.toggleLike(postId);
 
@@ -46,31 +53,19 @@ export default function Post({post}: {post: PostType}) {
 
     // Menu
     const [showMenu, setShowMenu] = useState(false);
-    const [isOwner, setIsOwner] = useState(false);
-
-
-    useEffect(() => {
-        const user = localStorage.getItem("user");
     
-        if (user) {
-            const parsedUser = JSON.parse(user);
-            const userId = parsedUser?.user?.id;
-    
-            if (post.userId === userId) {
-            setIsOwner(true);
-            }
-        }
-    }, [post.userId]);
+
 
     const handleEdit = () => {
         console.log("Edit post", post.id);
+        // kalla á onChange hér ef ég implementa
     };
     
     const handleDelete = async() => {
         const api = new ApiClient();
         await api.deletePost(post.id);
+        onChange();
         console.log("Delete post", post.id);
-        window.location.reload();
     };
 
     return (
@@ -80,12 +75,10 @@ export default function Post({post}: {post: PostType}) {
                 <UserInfo userId={post.userId}/>
                 
                 <div className = {styles.postOptions}>
-                    {isOwner && (
+                    {user?.id === post.userId && (
                     <div>
                         
-
                         <MoreVertIcon onClick={() => setShowMenu(!showMenu)} />
-
                     {showMenu && (
                     <div className={styles.menu}>
                         <p onClick={handleEdit}>Edit</p>

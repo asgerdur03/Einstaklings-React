@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Comic_Neue } from "next/font/google";
 import "./globals.css";
+import { AuthProvider } from "@/context/AuthContext";
 
 
 const comicNeue = Comic_Neue({
@@ -23,7 +24,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={comicNeue.className}>
+        <AuthProvider>
         {children}
+        </AuthProvider>
       </body>
     </html>
   );

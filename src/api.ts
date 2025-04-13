@@ -11,6 +11,7 @@ export class ApiClient {
         }
     ): Promise<T | null> {
         const token = localStorage.getItem("token");
+        console.log("token before fetching",token);
         let response: Response | undefined;
 
         try {
@@ -48,10 +49,10 @@ export class ApiClient {
         
     } 
 
-    async apiLogin(username: string, email: string, password: string): Promise<boolean> {
+    async apiLogin(username: string, email: string, password: string){
         const url = `${BASE_URL}/users/login`;
 
-        const res = await this.fetchFromApi<{ token: string }>(url, {
+        const res = await this.fetchFromApi<{ token: string , user: User}>(url, {
             method: "POST",
             body: {
                 username: username,
@@ -62,12 +63,11 @@ export class ApiClient {
 
         if (res?.token) {
             localStorage.setItem("token", res.token);
-            localStorage.setItem("user", JSON.stringify(res));
-            document.cookie = `token=${res.token}; path=/; max-age=${3600*3};`;
+            const token = localStorage.getItem("token");
+            console.log("token after login",token);
 
-            return true;
         }
-        return false;
+        return res;
     }
 
     async apiRegister(username: string, email: string, password: string): Promise<User | null> {
@@ -257,15 +257,12 @@ export class ApiClient {
         return data
     }
 
-    async editUser(user: CreateUser) {
+    async editUser(profilePic: string): Promise<User | null> {
         const url = `${BASE_URL}/users/me`;
-        const data = await this.fetchFromApi(url, {
+        const data = await this.fetchFromApi<User | null>(url, {
             method: "PATCH",
             body: {
-                username: user.username,
-                email: user.email,
-                password: user.password,
-                profilePic: user.profilePic
+                profilePic: profilePic
             }
         });
         return data

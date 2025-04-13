@@ -7,46 +7,43 @@ import {ApiClient} from "@/api";
 import moment from "moment";
 import styles from "./User.module.css";
 import Image from "next/image";
+import { useAuth } from "@/context/AuthContext";
 
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "https://einstaklings-api.onrender.com";
 export default function User() {
     const [posts, setPosts] = useState<Array<PostType>| null>([]);
+    const {user, setUser} = useAuth();
 
-    let user
-    if (typeof window !== "undefined"){
-      user = localStorage.getItem("user");
-    }
+    async function fetchPosts() {
+      if (!user) return;
     
-
-    let parsedUser;
-    if (user) {
-        parsedUser = JSON.parse(user);
+      const api = new ApiClient();
+      const posts = await api.getPostsByUserId(user.id);
+      setPosts(posts ?? []);
     }
-    const userInfo = parsedUser.user;
     
     useEffect(() => {
-            async function fetchPosts() {
-            const api = new ApiClient();
-            const posts = await api.getPostsByUserId(userInfo.id);
-            setPosts(posts ?? []);
-        }
-        fetchPosts();
-    }, [userInfo.id]);
 
-    const [form, setForm] = useState<CreateUser>({
-        username: userInfo.username,
-        email: userInfo.email,
-        password: userInfo.password,
-        profilePic: userInfo.profilePic
+        fetchPosts();
+    }, []);
+
+    // TODO: fix the update user, both in api and front
+    const [form, setForm] = useState({
+        profilePic: user?.profilePic
     })
 
     const handleChangeUser = async (e: React.FormEvent) => {
+      // TODO: update imediately after updating
       e.preventDefault();
         const api = new ApiClient();
-        const newUser = await api.editUser(form);
+        if (!form.profilePic) return
+
+        const newUser = await api.editUser(form.profilePic);
+
+        setUser(newUser);
         console.log("new user: ", newUser);
-        window.location.reload();
+        console.log("user: ", user);
     };
 
     const handleImageUpload = async(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,32 +61,36 @@ export default function User() {
 
     return (
         <div>
+          { user ? (<>
           <div className={styles.upload_image}>
             <form onSubmit={handleChangeUser}>
               <p>Upload profile pic</p>
               <input type="file" name="image" accept="image/*" onChange={handleImageUpload} />
               {form.profilePic && (
                     <div className={styles.preview}>
-                        <Image src={form.profilePic} alt="preview" width={100} height={100} key={form.username} />
+                        <Image src={form.profilePic} alt="preview" width={100} height={100} key={form.profilePic} />
                     </div>
                 )}
               <button type="submit">Submit</button>
             </form>
           </div>
 
-
+        
           <div className={styles.profile}>
             <h1>User</h1>
-            <p>Username: {userInfo.username}</p>
-            <p>Email: {userInfo.email}</p>
-            <p>User since: {moment(userInfo.createdAt).fromNow()}</p>
+            <p>Username: {user.username}</p>
+            <p>Email: {user.email}</p>
+            <p>User since: {moment(user.createdAt).fromNow()}</p>
             <p>Number of posts: {posts?.length}</p>
           </div>
 
 
           <div className={styles.posts}>
-              {posts?.map((post, index) => <Post post={post} key={index}/>)}
+              {posts?.map((post, index) => <Post post={post} key={index} onChange={fetchPosts}/>)}
           </div>
+          </>) : <p>Not logged in</p>
+}
+
         </div>
     );
 }
