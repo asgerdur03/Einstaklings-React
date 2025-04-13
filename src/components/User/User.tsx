@@ -1,7 +1,7 @@
 'use client';
 
 import Post from "../Post/Post";
-import {CreateUser, Post as PostType} from "@/types";
+import { Post as PostType} from "@/types";
 import React, { useEffect, useState} from "react";
 import {ApiClient} from "@/api";
 import moment from "moment";
@@ -26,7 +26,7 @@ export default function User() {
     useEffect(() => {
 
         fetchPosts();
-    }, []);
+    });
 
     // TODO: fix the update user, both in api and front
     const [form, setForm] = useState({

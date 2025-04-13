@@ -21,7 +21,7 @@ export default function UserInfo(userId: { userId: string }) {
             setUser(getUser);
         }
         fetchUser();
-    }, []);
+    });
 
 
 

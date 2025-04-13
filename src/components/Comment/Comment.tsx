@@ -34,7 +34,7 @@ export default function Comment({postId}: {postId: string}) {
         setComments(updateComments ?? []);
     }
 
-    const handleDelete = async(commentId: string, userId: string) => {
+    const handleDelete = async(commentId: string) => {
         const api = new ApiClient();
         await api.deleteComment(commentId);
         const updateComments = await api.getCommentsByPostId(postId);

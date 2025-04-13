@@ -1,4 +1,4 @@
-import {User, Post, Like, Comment, CreatePost, CreateUser} from "./types";
+import {User, Post, Like, Comment, CreatePost} from "./types";
 
 
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL ?? "https://einstaklings-api.onrender.com";

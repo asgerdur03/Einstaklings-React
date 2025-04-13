@@ -2,14 +2,12 @@
 import Link from "next/link";
 import {ApiClient} from "@/api";
 import React, {useState} from "react";
-import {useRouter} from "next/navigation";
 import styles from "./Login.module.css";
 import { useAuth } from "@/context/AuthContext";
 
 
 export default function Login() {
     const [inputs, setInputs] = useState({ username: "", email: "", password: "" });
-    const router = useRouter();
     const {login} = useAuth();
 
     const [error, setError] = useState('');

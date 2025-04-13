@@ -4,9 +4,6 @@ import styles from "./Navigation.module.css";
 import UserInfo from "../UserInfo/UserInfo";
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { useEffect, useState } from "react";
-import { ApiClient } from "@/api";
-import { User } from "@/types";
 import { useAuth } from "@/context/AuthContext";
 
 export default function Navigation() {
