@@ -56,7 +56,7 @@ export default function Comment({postId}: {postId: string}) {
 
                     <div className={styles.comment_actions}>
                         {user?.id === comment.userId &&
-                            <DeleteIcon onClick={() => handleDelete(comment.id, comment.userId)}/>
+                            <DeleteIcon onClick={() => handleDelete(comment.id)}/>
                         }
                         <span>{moment(comment.createdAt).fromNow() }</span>
     
