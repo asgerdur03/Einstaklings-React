@@ -17,11 +17,12 @@ export default function UserInfo(userId: { userId: string }) {
             if (!userId.userId) {
                 return;
             }
+            console.log("calling getUserById");
             const getUser = await api.getUserById(userId.userId);
             setUser(getUser);
         }
         fetchUser();
-    });
+    }, [userId.userId]);
 
 
 

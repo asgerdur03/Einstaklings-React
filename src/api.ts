@@ -11,7 +11,7 @@ export class ApiClient {
         }
     ): Promise<T | null> {
         const token = localStorage.getItem("token");
-        console.log("token before fetching",token);
+        //console.log("token before fetching",token);
         let response: Response | undefined;
 
         try {
@@ -86,8 +86,8 @@ export class ApiClient {
         return res;
     }
 
-    async getAllPosts(): Promise<Array<Post> | null> {
-        const url = `${BASE_URL}/posts`;
+    async getAllPosts(offset: number): Promise<Array<Post> | null> {
+        const url = `${BASE_URL}/posts?offset=${offset}`;
 
         const res = await this.fetchFromApi<Array<Post>>(url, {
             method: "GET"

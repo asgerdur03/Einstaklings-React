@@ -14,7 +14,7 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Image from "next/image";
 import { useAuth } from "@/context/AuthContext";
 
-export default function Post({post, onChange}: {post: PostType, onChange: () => void}) {
+export default function Post({post, canDelete=false, onChange}: {post: PostType, canDelete?: boolean, onChange: () => void}) {
     const postId = post.id;
 
     const [likes, setLikes] = useState<Array<Like>|null>(null);
@@ -26,6 +26,7 @@ export default function Post({post, onChange}: {post: PostType, onChange: () => 
     useEffect(() => {
         async function fetchLikes() {
             const api = new ApiClient();
+            console.log("calling getLikesByPostId");
             const likes = await api.getLikesByPostId(postId);
             setLikes(likes ?? []);
 
@@ -40,12 +41,14 @@ export default function Post({post, onChange}: {post: PostType, onChange: () => 
 
     const toggleLike = async() => {
         const api = new ApiClient();
+        console.log("calling toggleLike");
         const isLiked = await api.toggleLike(postId);
 
         const likedNow = isLiked?.liked;
         setLiked(likedNow ?? false);
 
         console.log(isLiked);
+        console.log("calling getLikesByPostId after toggleLike");
         const updateLikes = await api.getLikesByPostId(postId);
 
         setLikes(updateLikes ?? []);
@@ -63,6 +66,7 @@ export default function Post({post, onChange}: {post: PostType, onChange: () => 
     
     const handleDelete = async() => {
         const api = new ApiClient();
+        console.log("calling deletePost");
         await api.deletePost(post.id);
         onChange();
         console.log("Delete post", post.id);
@@ -75,7 +79,7 @@ export default function Post({post, onChange}: {post: PostType, onChange: () => 
                 <UserInfo userId={post.userId}/>
                 
                 <div className = {styles.postOptions}>
-                    {user?.id === post.userId && (
+                    {canDelete && (
                     <div>
                         
                         <MoreVertIcon onClick={() => setShowMenu(!showMenu)} />

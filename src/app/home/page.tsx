@@ -16,7 +16,9 @@ export default function Home() {
             <div className={styles.container}>
                 <PostForm/>
                 <Posts/>
+
             </div>
+
         </div>
     );
 }

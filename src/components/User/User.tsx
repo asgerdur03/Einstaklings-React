@@ -2,7 +2,7 @@
 
 import Post from "../Post/Post";
 import { Post as PostType} from "@/types";
-import React, { useEffect, useState} from "react";
+import React, { useCallback, useEffect, useState} from "react";
 import {ApiClient} from "@/api";
 import moment from "moment";
 import styles from "./User.module.css";
@@ -15,18 +15,20 @@ export default function User() {
     const [posts, setPosts] = useState<Array<PostType>| null>([]);
     const {user, setUser} = useAuth();
 
-    async function fetchPosts() {
+    const fetchPosts = useCallback(async() => {
       if (!user) return;
     
       const api = new ApiClient();
+      console.log("calling getPostsByUserId");
       const posts = await api.getPostsByUserId(user.id);
       setPosts(posts ?? []);
-    }
+    }, [user]);
     
     useEffect(() => {
+      if (!user) return;
 
         fetchPosts();
-    });
+    }, [user, fetchPosts]);
 
     // TODO: fix the update user, both in api and front
     const [form, setForm] = useState({
@@ -39,6 +41,7 @@ export default function User() {
         const api = new ApiClient();
         if (!form.profilePic) return
 
+        console.log("calling editUser");
         const newUser = await api.editUser(form.profilePic);
 
         setUser(newUser);
@@ -51,6 +54,8 @@ export default function User() {
       if (!file) return;
       const formData = new FormData();
       formData.append('image', file);
+      
+      console.log("calling upload");
       const response = await fetch(`${BASE_URL}/upload`, { method: 'POST', body: formData });
       const data = await response.json();
       const imageUrl = data.image?.[0]?.url
@@ -86,7 +91,7 @@ export default function User() {
 
 
           <div className={styles.posts}>
-              {posts?.map((post, index) => <Post post={post} key={index} onChange={fetchPosts}/>)}
+              {posts?.map((post, index) => <Post post={post} key={index} canDelete={true} onChange={fetchPosts}/>)}
           </div>
           </>) : <p>Not logged in</p>
 }

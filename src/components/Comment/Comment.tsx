@@ -19,6 +19,7 @@ export default function Comment({postId}: {postId: string}) {
     useEffect(() => {
         async function fetchComments() {
             const api = new ApiClient();
+            console.log("calling getCommentsByPostId");
             const comments = await api.getCommentsByPostId(postId);
 
             setComments(comments ?? []);
